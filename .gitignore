@@ -43,5 +43,3 @@ build/
 **/application.properties
 **/test/resources/application.properties
 
-# Allow example files
-!**/test/resources/application.properties.example
