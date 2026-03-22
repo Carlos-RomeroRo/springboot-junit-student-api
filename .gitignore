@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+.env.local
+.env.*.local
+
+# Keep .env ignored but allow modification
+.env
+
+# Real configuration files (keep examples only)
+**/application.properties
+**/test/resources/application.properties
+
+# Allow example files
+!**/test/resources/application.properties.example
