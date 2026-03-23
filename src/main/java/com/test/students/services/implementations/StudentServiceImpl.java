@@ -29,14 +29,14 @@ public class StudentServiceImpl implements StudentService {
     public StudentResponseDto createStudent(StudentRequestDto requestDto) {
         Student student = studentMapper.toEntity(requestDto);
         // exception for children under 15 years of age
-        if(student.getAge() == null || student.getAge()<15){
+        if (student.getAge() == null || student.getAge() < 15) {
             throw new InvalidAgeException("Students must be at least 15 years old. Provided: " + student.getAge());
         }
         // exception for semester number
-        if(student.getAge() == null || student.getCurrentSemester()<1){
-            throw new InvalidCurrentSemesterException("The semester number must be greater than zero "+student.getCurrentSemester());
+        if (student.getAge() == null || student.getCurrentSemester() < 1) {
+            throw new InvalidCurrentSemesterException("The semester number must be greater than zero " + student.getCurrentSemester());
         }
-        if(student.getName() == null || student.getName().isEmpty()){
+        if (student.getName() == null || student.getName().isEmpty()) {
             throw new NameEmptyExcpetion("The name cannot be empty.");
         }
         Student savedStudent = studentRepository.save(student);

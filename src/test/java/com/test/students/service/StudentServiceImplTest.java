@@ -15,6 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,7 +66,7 @@ public class StudentServiceImplTest {
                 .currentSemester(3)
                 .build();
     }
-
+    // Caso para verificar que un estudiante se cree correctamente
     @Test
     void shouldCreateStudentSucessfully(){
         //Given - Arrange (preparar datos)
@@ -100,7 +104,7 @@ public class StudentServiceImplTest {
         verify(studentMapper, never()).toResponseDTO(any());
     }
 
-    // Verifica si la validación para estudiantes menores de 14 años es correcta
+    // Verifica si la validación para estudiantes menores de 15 años es correcta
     @Test
     void shouldThrowInvlidAgeExceptionStudent(){
         // Given - Arrange
@@ -206,6 +210,72 @@ public class StudentServiceImplTest {
         verify(studentRepository, never()).save(any());
 
     }
+
+    // Caso de éxito para verificar que la lista de estudiantes se muestre correctamente
+    @Test
+    void shouldGetStudents(){
+        // Given - Arrange (preparar datos)
+        List<Student> studentList = List.of(student);
+        List<StudentResponseDto> expectResponse = List.of(studentResponseDto);
+
+        when(studentRepository.findAll()).thenReturn(studentList);
+        when(studentMapper.toResponseDTO(student)).thenReturn(studentResponseDto);
+
+        // When - Act (ejecutar método)
+        List<StudentResponseDto> result = studentService.getAllStudents();
+
+        // Then - Assert (Verificar resultados)
+        assertThat(result).isEqualTo(expectResponse);
+        assertThat(result).hasSize(1);
+        verify(studentRepository).findAll();
+        verify(studentMapper).toResponseDTO(student);
+    }
+    // Caso de éxito para verificar que un estudiante es encontrado por su id
+    @Test
+    void shouldGetStudentById(){
+        // Given - Arrange (preparar datos)
+        Long testId = 1L;
+        Student studentById = student;
+        StudentResponseDto expectResponse = studentResponseDto;
+
+        when(studentRepository.findById(testId)).thenReturn(Optional.of(studentById));
+        when(studentMapper.toResponseDTO(student)).thenReturn(studentResponseDto);
+
+        // When - Act (ejecutar método)
+        StudentResponseDto result = studentService.getStudentById(testId);
+
+        // Then - Assert (Verificar resultados)
+        assertThat(result).isEqualTo(expectResponse);
+        verify(studentRepository).findById(testId);
+        verify(studentMapper).toResponseDTO(student);
+    }
+
+    // Caso de éxito para verificar que un estudiante es eliminado por su id
+    @Test
+    void shouldDeleteById(){
+        // Given - Arrange (preparar datos)
+        Long testId = 1L;
+        Student studentDeleteById = student;
+
+        when(studentRepository.findById(testId)).thenReturn(Optional.of(studentDeleteById));
+        doNothing().when(studentRepository).delete(studentDeleteById);
+
+        // When - Act (ejecutar método)
+        studentService.deleteStudent(testId);
+
+        // Then - Assert (verificar resultados)
+        verify(studentRepository).findById(testId);
+        verify(studentRepository).delete(studentDeleteById);
+    }
+
+    // Caso de exito para actualizar un estuiante consultando por ID
+    @Test
+    void shouldUpdateById(){
+        // Given - Arrange (preparar datos)
+        Long testId = 1L;
+
+    }
+
 
 
 
