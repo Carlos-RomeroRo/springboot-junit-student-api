@@ -130,7 +130,7 @@ Database
 
 Once the application is running, you can test all endpoints using Swagger UI:
 
-👉 http://localhost:8080/swagger-ui/index.html#/student-controller/getAllStudent
+👉 http://localhost:8081/swagger-ui/index.html#/student-controller/getAllStudent
 
 From there you can:
 
